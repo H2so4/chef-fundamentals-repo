@@ -28,15 +28,9 @@ cookbook_file "/etc/motd.tail" do
   mode 00644
 end
 
-
-ruby_block "add-EDITOR-bashrc" do
-  block do
-    editor_line = "[[ ! -z $SSH_TTY ]] && export EDITOR=/usr/bin/vim || export EDITOR='/opt/SublimeText2/sublime_text -w'"
-    bashrc = Chef::Util::FileEdit.new("/home/ubuntu/.bashrc")
-    bashrc.insert_line_if_no_match(/#{editor_line}/, editor_line)
-    bashrc.write_file
-  end
-  action :create
+cookbook_file "/home/ubuntu/.bashrc" do
+  source "ubuntu.bashrc"
+  mode 00644
 end
 
 sbl_tar = File.join(Chef::Config[:file_cache_path], "SublimeText2.tar.bz2")

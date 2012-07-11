@@ -24,6 +24,19 @@ unless platform?("ubuntu")
   raise "Unsupported platform!"
 end
 
+user "ubuntu" do
+  home "/home/ubuntu"
+  shell "/bin/bash"
+  comment "Ubuntu"
+  supports :manage_home => true
+end
+
+group "sudo" do
+  members "ubuntu"
+  action :modify
+  append true
+end
+
 file("/etc/profile.d/Z97-byobu.sh") { action :delete }
 
 include_recipe "knife-workstation::packages"
