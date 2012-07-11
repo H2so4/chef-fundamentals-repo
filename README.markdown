@@ -3,6 +3,32 @@ taking a Chef Fundamentals or Chef Workshop training course.
 
 **Read this README in its entirety before setting up your lab.**
 
+Purpose and Results
+===================
+
+The purpose of having this set up with Chef is so we can use baseline
+AMIs and not manage golden images / AMIs.
+
+At the end of the lab setup, you will have:
+
+* 1 "target" instance for each student
+* 1 "workstation" instance for each student(*)
+* 1 "classroom" instance for the instructor
+
+The "target" instance is the node that the students are going to
+manage with Chef in the hands on exercises.
+
+The "workstation" instance is the system that students can use as
+their workstation, where the chef-repo will be, and where they will
+run all the knife commands. (*) Due to size of the desktop environment
+installation, we create a custom AMI for this that has the required
+packages installed already, else it would take 20 minutes per instance
+to set up.
+
+The "classroom" instance is a web server that will perform a Chef
+search for all the targets and workstations, and display a web page
+with their IP addresses.
+
 Assumptions
 ===========
 
@@ -154,14 +180,38 @@ students to use. For example:
 
     % knife lab
     https://opscode-chef-training.s3.amazonaws.com/ChefWorkshop-CheatSheet.pdf
-    
+
     # Workstations (SSH or VNC display :1)
     184.72.153.99 opstrain1 # workstation
-    
+
     # Target nodes (SSH)
     107.20.125.24 opstrain1 # target node
 
 The CheatSheet PDF link is included for convenience.
+
+Vagrantfile
+===========
+
+**ALPHA**
+
+There's a Vagrantfile in the repository to launch a simple 3 node
+infrastructure for testing purposes. Use the EC2 method for launching
+instances for now, this is here to reduce time required for testing.
+
+You'll need to create a precise.box basebox, or download one. We don't
+have a box for general consumption (this is ALPHA!) yet.
+
+    % gem install vagrant
+    % vagrant box add workstation precise.box
+    % vagrant box add target precise.box
+    % vagrant box add classroom precise.box
+
+The Vagrantfile is multi-vm.
+[My blog post](http://jtimberman.housepub.org/blog/2012/03/18/multivm-vagrantfile-for-chef/)
+may be useful to understand how this stuff works. A simple `vagrant
+up` should bring all three instances up.
+
+**ALPHA**
 
 To do:
 ======
@@ -170,6 +220,8 @@ To do:
 * Clean up the older `chef-fundamentals` cruft.
 * Release the "workstation" AMI; this requires ensuring it is cleaned
   up and fit for consumption by the masses.
+* Build this repository/environment such that it can be deployed w/o
+  internet access.
 
 License and Author
 ==================
