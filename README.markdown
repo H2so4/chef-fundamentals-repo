@@ -209,7 +209,8 @@ have a box for general consumption (this is ALPHA!) yet.
 The Vagrantfile is multi-vm.
 [My blog post](http://jtimberman.housepub.org/blog/2012/03/18/multivm-vagrantfile-for-chef/)
 may be useful to understand how this stuff works. A simple `vagrant
-up` should bring all three instances up.
+up` should bring all three instances up. When done, `vagrant destroy`
+will destroy all three vagrant VMs and also remove them from the Chef Server.
 
 **ALPHA**
 
