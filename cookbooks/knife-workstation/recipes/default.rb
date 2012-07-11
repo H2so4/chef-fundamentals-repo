@@ -31,5 +31,7 @@ include_recipe "knife-workstation::ssh"
 include_recipe "knife-workstation::editors"
 include_recipe "knife-workstation::vnc"
 
+execute "chown -R ubuntu:ubuntu /home/ubuntu"
+
 log "The workstation is now configured:"
 log "Login: ubuntu Password: #{node['workstation']['password']}"

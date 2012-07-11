@@ -1,0 +1,6 @@
+#!/bin/bash
+unset SESSION_MANAGER
+export DISPLAY=:1
+gnome-session --session=gnome-classic &
+x-terminal-emulator -geometry 80x24 &
+x-window-manager &

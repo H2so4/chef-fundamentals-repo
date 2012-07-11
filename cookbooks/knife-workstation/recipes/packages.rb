@@ -31,7 +31,7 @@ emacs23-nox
 emacs-goodies-el
 gnome-core
 ttf-inconsolata
-vnc4server
+tightvncserver
 gedit
 x11vnc
 }

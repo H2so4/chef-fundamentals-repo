@@ -1,0 +1,12 @@
+# vnc-server.conf
+
+start on runlevel [2345]
+stop on runlevel [016]
+
+post-start script
+  su ubuntu -c '/usr/bin/vncserver -name vnc-server -depth 16 -geometry 1280x1024 :1'
+end script
+
+post-stop script
+  su ubuntu -c '/usr/bin/vncserver -kill :1'
+end script

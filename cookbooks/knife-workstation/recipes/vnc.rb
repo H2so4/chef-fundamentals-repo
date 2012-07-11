@@ -26,22 +26,16 @@ directory "/home/ubuntu/.vnc" do
   owner "ubuntu"
 end
 
-file "/home/ubuntu/.vnc/xstartup" do
+cookbook_file "/home/ubuntu/.vnc/xstartup" do
+  source "xstartup"
   owner "ubuntu"
   mode 00755
-  content <<-EOH
-#!/bin/sh
-unset SESSION_MANAGER
-gnome-session --session=gnome-classic &
-x-terminal-emulator -geometry 80x24 &
-x-window-manager &
-EOH
 end
 
 execute "chown -R ubuntu:ubuntu /home/ubuntu"
 
-template "/etc/init.d/vncserver" do
-  source "vncserver.init.erb"
+template "/etc/init/vncserver.conf" do
+  source "vncserver.upstart.erb"
   mode 00755
 end
 
@@ -51,6 +45,7 @@ execute "x11vnc -storepasswd #{node['workstation']['password']} /home/ubuntu/.vn
 end
 
 service "vncserver" do
+  provider Chef::Provider::Service::Upstart
   supports :restart => true
   ignore_failure true
   action [:enable, :start]
