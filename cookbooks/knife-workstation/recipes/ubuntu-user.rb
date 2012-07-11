@@ -1,7 +1,7 @@
 #
 # Author:: Joshua Timberman <joshua@opscode.com>
 # Cookbook Name:: knife-workstation
-# Recipe:: default
+# Recipe:: ubuntu-user
 #
 # Copyright 2012, Opscode, Inc <legal@opscode.com>
 #
@@ -18,21 +18,15 @@
 # limitations under the License.
 #
 
-Chef::Config[:verbose_logging] = false
-unless platform?("ubuntu")
-  Chef::Log.fatal("#{cookbook_name}::#{recipe_name} is not supported on platform #{node['platform']}")
-  raise "Unsupported platform!"
+user "ubuntu" do
+  home "/home/ubuntu"
+  shell "/bin/bash"
+  comment "Ubuntu"
+  supports :manage_home => true
 end
 
-file("/etc/profile.d/Z97-byobu.sh") { action :delete }
-
-include_recipe "knife-workstation::ubuntu-user"
-include_recipe "knife-workstation::packages"
-include_recipe "knife-workstation::ssh"
-include_recipe "knife-workstation::editors"
-include_recipe "knife-workstation::vnc"
-
-execute "chown -R ubuntu:ubuntu /home/ubuntu"
-
-log "The workstation is now configured:"
-log "Login: ubuntu Password: #{node['workstation']['password']}"
+group "sudo" do
+  members "ubuntu"
+  action :modify
+  append true
+end
